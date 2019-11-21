@@ -1,4 +1,4 @@
-package com.freshworks.assignment.model;
+package assignment.model;
 
 /**
  * @author Manikandan E

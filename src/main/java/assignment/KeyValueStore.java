@@ -1,7 +1,7 @@
-package com.freshworks.assignment;
+package assignment;
 
-import com.freshworks.assignment.controller.KeyValueStoreController;
-import com.freshworks.assignment.exception.DataStoreException;
+import assignment.controller.KeyValueStoreController;
+import assignment.exception.DataStoreException;
 import org.json.JSONObject;
 
 import java.nio.charset.Charset;

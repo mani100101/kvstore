@@ -1,6 +1,6 @@
-package com.freshworks.assignment.datastore;
+package assignment.datastore;
 
-import com.freshworks.assignment.exception.DataStoreException;
+import assignment.exception.DataStoreException;
 
 import java.io.File;
 import java.io.IOException;

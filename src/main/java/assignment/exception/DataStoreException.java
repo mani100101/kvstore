@@ -1,4 +1,4 @@
-package com.freshworks.assignment.exception;
+package assignment.exception;
 
 /**
  * @author Manikandan E

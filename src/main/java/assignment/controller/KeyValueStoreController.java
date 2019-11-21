@@ -1,7 +1,7 @@
-package com.freshworks.assignment.controller;
+package assignment.controller;
 
-import com.freshworks.assignment.datastore.FileStore;
-import com.freshworks.assignment.model.DataStoreKey;
+import assignment.datastore.FileStore;
+import assignment.model.DataStoreKey;
 
 import java.util.PriorityQueue;
 
