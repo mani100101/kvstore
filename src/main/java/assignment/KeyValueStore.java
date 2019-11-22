@@ -2,10 +2,12 @@ package assignment;
 
 import assignment.controller.KeyValueStoreController;
 import assignment.exception.DataStoreException;
+import assignment.util.Util;
 import org.json.JSONObject;
 
-import java.nio.charset.Charset;
-import java.util.Objects;
+import java.util.Collections;
+
+import static assignment.constants.KeyValueStoreConstants.DEFAULT_STORE_PATH;
 
 /**
  * @author Manikandan E
@@ -14,52 +16,67 @@ public class KeyValueStore {
 
     private final KeyValueStoreController controller;
 
-    private KeyValueStore() {
-        this.controller = new KeyValueStoreController("data");
+    public KeyValueStore() {
+        this(DEFAULT_STORE_PATH);
     }
 
-    public static KeyValueStore instance() {
-        return InstanceHolder.INSTANCE;
+    public KeyValueStore(String dataStorePath) {
+        this.controller = new KeyValueStoreController(Util.completeDataStorePath(dataStorePath));
     }
 
-    private static class InstanceHolder {
-        private static final KeyValueStore INSTANCE = new KeyValueStore();
-    }
-
+    /**
+     * Add data to the store
+     *
+     * @param key key
+     * @param value value
+     * @param timeToLiveInSeconds time to live
+     * @throws DataStoreException data store exception
+     */
     public void put(String key, JSONObject value, long timeToLiveInSeconds) {
-        controller.put(validateKey(key), validateJson(value), timeToLiveInSeconds);
+        controller.put(Util.validateKey(key), Util.validateJson(value), timeToLiveInSeconds);
     }
 
+    /**
+     * Add data to the store
+     *
+     * @param key key
+     * @param value value
+     * @throws DataStoreException data store exception
+     */
     public void put(String key, JSONObject value) {
         put(key, value, -1);
     }
 
+    /**
+     * Get data from store
+     *
+     * @param key key
+     * @return json value
+     * @throws DataStoreException data store exception
+     */
     public JSONObject get(String key) {
-        String json = controller.get(validateKey(key));
+        String json = controller.get(Util.validateKey(key));
         if (json == null) {
             return null;
         }
         return new JSONObject(json);
     }
 
+    /**
+     * Remove data from store
+     *
+     * @param key key
+     * @throws DataStoreException data store exception
+     */
     public void remove(String key) {
-        controller.remove(validateKey(key));
+        controller.remove(Util.validateKey(key));
     }
 
-    private String validateKey(String key) {
-        Objects.requireNonNull(key, "Key cannot be null");
-        if (key.length() > 32) {
-            throw new DataStoreException("Key cannot be more than 32 chars");
-        }
-        return key;
-    }
+    public static void main(String[] args) {
 
-    private String validateJson(JSONObject json) {
-        Objects.requireNonNull(json, "Json cannot be null");
-        String jsonStr = json.toString();
-        if (jsonStr.getBytes(Charset.defaultCharset()).length / 1024 > 16) {
-            throw new DataStoreException("Json size cannot exceed 16KB");
-        }
-        return jsonStr;
+        KeyValueStore store = new KeyValueStore();
+
+        store.put("abc", new JSONObject(Collections.singletonMap("name", "manikandan")));
+
     }
 }

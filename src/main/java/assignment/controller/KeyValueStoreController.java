@@ -12,6 +12,7 @@ public class KeyValueStoreController {
 
     private final FileStore fileStore;
 
+    // Min heap to store short living keys at top to do eviction
     private final PriorityQueue<DataStoreKey> timedKeys =
             new PriorityQueue<>((key1, key2) -> (int) (key1.timeToLive() - key2.timeToLive()));
 
@@ -36,16 +37,12 @@ public class KeyValueStoreController {
     }
 
     public void remove(String key) {
-        synchronized (timedKeys) {
-            fileStore.remove(key);
-            timedKeys.removeIf(dataStoreKey -> dataStoreKey.key().equals(key));
-        }
+        fileStore.remove(key);
     }
 
     private void evictExpiredKeys() {
         while (!timedKeys.isEmpty() && timedKeys.peek().expired()) {
-            DataStoreKey poll = timedKeys.poll();
-            fileStore.remove(poll.key());
+            fileStore.remove(timedKeys.poll().key());
         }
     }
 
