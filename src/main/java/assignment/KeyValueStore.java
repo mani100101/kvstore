@@ -5,8 +5,6 @@ import assignment.exception.DataStoreException;
 import assignment.util.Util;
 import org.json.JSONObject;
 
-import java.util.Collections;
-
 import static assignment.constants.KeyValueStoreConstants.DEFAULT_STORE_PATH;
 
 /**
@@ -70,13 +68,5 @@ public class KeyValueStore {
      */
     public void remove(String key) {
         controller.remove(Util.validateKey(key));
-    }
-
-    public static void main(String[] args) {
-
-        KeyValueStore store = new KeyValueStore();
-
-        store.put("abc", new JSONObject(Collections.singletonMap("name", "manikandan")));
-
     }
 }
